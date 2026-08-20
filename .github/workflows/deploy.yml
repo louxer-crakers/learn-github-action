@@ -19,8 +19,8 @@ jobs:
 
       - name: Docker build
         run: |
-          docker build -t louxercr/test-cicd .
+          docker build -t louxercr/test-cicd:${{GITHUB_SHA}} .
 
       - name: Docker push
         run: |
-          docker push louxercr/test-cicd
+          docker push louxercr/test-cicd:${{GITHUB_SHA}}
