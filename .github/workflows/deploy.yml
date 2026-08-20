@@ -7,6 +7,7 @@ on:
 
 env:
   IMAGE_NAME: test-cicd
+  USER_DOCKERHUB: ${{secrets.USER}}
 
 jobs:
   build-and-push:
@@ -18,14 +19,14 @@ jobs:
 
       - name: Dockerhub Login
         run: |
-          echo "${{ secrets.TOKEN }}"  | docker login -u louxercr --password-stdin
+          echo "${{ secrets.TOKEN }}"  | docker login -u ${{env.USER_DOCKERHUB}} --password-stdin
 
       - name: Docker build
         run: |
-          docker build -t louxercr/${{env.IMAGE_NAME}}:${GITHUB_SHA} \
-          -t louxercr/${{env.IMAGE_NAME}}:latest .
+          docker build -t ${{env.USER_DOCKERHUB}}/${{env.IMAGE_NAME}}:${GITHUB_SHA} \
+          -t ${{env.USER_DOCKERHUB}}/${{env.IMAGE_NAME}}:latest .
 
       - name: Docker push
         run: |
-          docker push louxercr/${{env.IMAGE_NAME}}:${GITHUB_SHA}
-          docker push louxercr/${{env.IMAGE_NAME}}:latest
+          docker push ${{env.USER_DOCKERHUB}}/${{env.IMAGE_NAME}}:${GITHUB_SHA}
+          docker push ${{env.USER_DOCKERHUB}}/${{env.IMAGE_NAME}}:latest
